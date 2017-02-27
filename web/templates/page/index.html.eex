@@ -1,0 +1,6 @@
+<div>
+  <div id="hello-world">
+    Hola
+    {{message}}
+  </div>
+</div>
