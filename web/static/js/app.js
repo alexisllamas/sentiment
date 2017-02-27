@@ -21,9 +21,16 @@ import "phoenix_html"
 // import socket from "./socket"
 
 import Vue from "vue";
-new Vue({
-  el: "#hello-world",
+
+window.app = new Vue({
+  el: '#app',
   data: {
-    message: "Hello World"
+    message: 'Hello Vue.js!'
+  },
+  methods: {
+    reverseMessage: function () {
+      this.message = this.message.split('').reverse().join('')
+    }
   }
 });
+
