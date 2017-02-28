@@ -10,7 +10,7 @@ defmodule Etlicus.AfinnController do
       afinn = Repo.all(Afinn)
       render(conn, "index.json", afinn: afinn)
     else
-      words = Enum.map String.split(text, " "), fn(word) -> formatWord(word) end
+      words = Enum.map String.split(text, "-"), fn(word) -> formatWord(word) end
       wordsScore = Enum.map words, fn(word) -> get_score word end
       wordsFound = Enum.filter wordsScore, fn(word) -> word.score != 0 end
       scoresNumbers = Enum.map wordsFound, fn(word) -> word.score end
@@ -18,10 +18,9 @@ defmodule Etlicus.AfinnController do
       comparative = get_comparative score, Enum.count(words)
       json conn, %{
         score: score,
-        words: words,
         wordsFound: wordsFound,
-        scoresNumbers: scoresNumbers,
-        comparative: comparative
+        comparative: comparative,
+        words: words
       }
     end
   end
@@ -45,7 +44,7 @@ defmodule Etlicus.AfinnController do
   end
 
   def formatWord(word) do
-    Regex.replace ~r/\/[^A-Z,a-z,0-9]/, String.downcase(word), "dllkd"
+    Regex.replace ~r/\W+/, String.downcase(word), ""
   end
 
   def get_comparative(score, length) do

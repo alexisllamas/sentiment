@@ -11,7 +11,8 @@
 //
 // If you no longer want to use a dependency, remember
 // to also remove its path from "config.paths.watched".
-import "phoenix_html"
+import 'phoenix_html'
+import 'purecss'
 
 // Import local files
 //
@@ -20,16 +21,22 @@ import "phoenix_html"
 
 // import socket from "./socket"
 
-import Vue from "vue";
+import Vue from 'vue';
+import api from './api';
 
 window.app = new Vue({
   el: '#app',
   data: {
-    message: 'Hello Vue.js!'
+    message: '',
+    score: '',
+    comparative: ''
   },
   methods: {
-    reverseMessage: function () {
-      this.message = this.message.split('').reverse().join('')
+    getScore: function () {
+      api.getScore(this.message).then(({score, comparative}) => {
+        this.score = score;
+        this.comparative = comparative;
+      });
     }
   }
 });

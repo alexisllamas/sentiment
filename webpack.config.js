@@ -1,7 +1,7 @@
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var CopyWebpackPlugin = require("copy-webpack-plugin");
 module.exports = {
-  entry: ["./web/static/css/app.css", "./web/static/js/app.js"],
+  entry: ["./web/static/css/app.scss", "./web/static/js/app.js"],
   output: {
     path: "./priv/static",
     filename: "js/app.js"
@@ -27,12 +27,26 @@ module.exports = {
       loader: 'vue'
     }, {
       test: /\.css$/,
-      loader: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader' })
+      loader: ExtractTextPlugin.extract({
+        fallback: 'style-loader',
+        use: 'css-loader'
+      })
+    }, {
+      test: /\.scss$/,
+      use: [{
+        loader: "style-loader" // creates style nodes from JS strings
+      }, {
+        loader: "css-loader" // translates CSS into CommonJS
+      }, {
+        loader: "sass-loader" // compiles Sass to CSS
+      }]
     }]
   },
 
   plugins: [
     new ExtractTextPlugin("css/app.css"),
-    new CopyWebpackPlugin([{ from: "./web/static/assets" }])
+    new CopyWebpackPlugin([{
+      from: "./web/static/assets"
+    }])
   ]
 };

@@ -1,5 +1,10 @@
 <div id="app">
-  <p>{{ message }}</p>
-  <input v-model="message">
-  <button v-on:click="reverseMessage">Reverse Message</button>
+  <form class="pure-form pure-g">
+    <div class="pure-u-3-4">
+      <input v-model="message" class="pure-input-1" type="text" placeholder="Text">
+    </div>
+  </form>
+  <button class="pure-button pure-button-primary" v-on:click="getScore">Get score!</button>
+  <p>Score: {{ score }}</p>
+  <p>Comparative: {{ comparative }}</p>
 </div>
