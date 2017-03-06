@@ -34,6 +34,7 @@ window.app = new Vue({
   },
   methods: {
     getScore: function () {
+      if (event) event.preventDefault()
       api.getScore(this.message).then(({score, comparative}) => {
         this.score = score;
         this.comparative = comparative;
