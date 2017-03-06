@@ -13,26 +13,24 @@ use Mix.Config
 # which you typically run after static files are built.
 config :etlicus, Etlicus.Endpoint,
   http: [port: {:system, "PORT"}],
-  url: [scheme: "https", host: "etlicus.herokuapp.com", port: 443],
-  force_ssl: [rewrite_on: [:x_forwarded_proto]],
+  url: [host: System.get_env("HOST"), port: System.get_env("PORT")],
   cache_static_manifest: "priv/static/manifest.json",
   secret_key_base: System.get_env("SECRET_KEY_BASE")
+
+# Do not print debug messages in production
+config :logger, level: :info
 
 config :etlicus, Etlicus.Repo,
   adapter: Ecto.Adapters.Postgres,
   url: System.get_env("DATABASE_URL"),
-  pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
-  ssl: true
-
-# Do not print debug messages in production
-config :logger, level: :info
+  pool_size: 20
 
 # ## SSL Support
 #
 # To get SSL working, you will need to add the `https` key
 # to the previous section and set your `:url` port to 443:
 #
-#     config :etlicus, Etlicus.Endpoint,
+#     config :phoenix_elm_webpack_heroku_example_app, PhoenixElmWebpackHerokuExampleApp.Endpoint,
 #       ...
 #       url: [host: "example.com", port: 443],
 #       https: [port: 443,
@@ -46,7 +44,7 @@ config :logger, level: :info
 # We also recommend setting `force_ssl`, ensuring no data is
 # ever sent via http, always redirecting to https:
 #
-#     config :etlicus, Etlicus.Endpoint,
+#     config :phoenix_elm_webpack_heroku_example_app, PhoenixElmWebpackHerokuExampleApp.Endpoint,
 #       force_ssl: [hsts: true]
 #
 # Check `Plug.SSL` for all available options in `force_ssl`.
@@ -61,6 +59,12 @@ config :logger, level: :info
 # Alternatively, you can configure exactly which server to
 # start per endpoint:
 #
-#     config :etlicus, Etlicus.Endpoint, server: true
+#     config :phoenix_elm_webpack_heroku_example_app, PhoenixElmWebpackHerokuExampleApp.Endpoint, server: true
 #
+# You will also need to set the application root to `.` in order
+# for the new static assets to be served after a hot upgrade:
+#
+#     config :phoenix_elm_webpack_heroku_example_app, PhoenixElmWebpackHerokuExampleApp.Endpoint, root: "."
 
+# Finally import the config/prod.secret.exs
+# which should be versioned separately.
