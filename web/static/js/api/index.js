@@ -9,7 +9,7 @@ export default {
         .set('Accept', 'application/json')
         .end((err, {body}) => {
           const {score, comparative} = body;
-          const comparativeFormated = parseFloat(comparative.toFixed(4));
+          const comparativeFormated = comparative ? parseFloat(comparative.toFixed(4)) : 'error';
           resolve({score: score, comparative: comparativeFormated});
         });
     });
