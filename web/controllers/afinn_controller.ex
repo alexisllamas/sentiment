@@ -4,8 +4,8 @@ defmodule Etlicus.AfinnController do
 
   alias Etlicus.Afinn
 
-  def index(conn, _params) do
-    text =  Map.get _params, "text"
+  def index(conn, params) do
+    text =  Map.get params, "text"
     if (is_nil text) do
       afinn = Repo.all(Afinn)
       render(conn, "index.json", afinn: afinn)
