@@ -3,8 +3,7 @@
     <div class="pure-u-3-4">
       <input v-model="message" class="pure-input-1" type="text" placeholder="Text">
     </div>
+    <button class="pure-button pure-button-primary" v-on:click="getScore">Get score!</button>
   </form>
-  <button class="pure-button pure-button-primary" v-on:click="getScore">Get score!</button>
-  <p>Score: {{ score }}</p>
-  <p>Comparative: {{ comparative }}</p>
+  <p v-if="showScore">Score: {{ score }}</p>
 </div>

@@ -29,13 +29,15 @@ window.app = new Vue({
   data: {
     message: '',
     score: '',
-    comparative: ''
+    comparative: '',
+    showScore: false
   },
   methods: {
     getScore: function () {
       api.getScore(this.message).then(({score, comparative}) => {
         this.score = score;
         this.comparative = comparative;
+        this.showScore = true;
       });
     }
   }
