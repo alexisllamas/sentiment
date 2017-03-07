@@ -52,16 +52,13 @@ const app = new Vue({
     },
     allTweets: function() {
       if (event) event.preventDefault()
-      console.log('hola');
-      this.html = this.tweets.map(tweet => tweet.html).join('');
+      this.html = this.tweets.map(tweet => tweet.tweetHtml).join('');
     },
     negativeTweets: function() {
-      console.log('hola');
-      this.html = this.tweets.filter(tweet => tweet.score < 0).map(tweet => tweet.html).join('');
+      this.html = this.tweets.filter(tweet => tweet.score < 0).map(tweet => tweet.tweetHtml).join('');
     },
     positiveTweets: function() {
-      console.log('hola');
-      this.html = this.tweets.filter(tweet => tweet.score > 0).map(tweet => tweet.html).join('');
+      this.html = this.tweets.filter(tweet => tweet.score > 0).map(tweet => tweet.tweetHtml).join('');
     },
     searchTwits: async function() {
       const {twttr} = window;

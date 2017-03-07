@@ -11,7 +11,7 @@
     <div>Total score: {{ totalScore }}</div>
     <div>Average score: {{ average }}</div>
   </div>
-  <div class="pure-button-group" role="group">
+  <div v-if="showStats" class="pure-button-group" role="group">
     <button v-on:click="allTweets" class="pure-button">All</button>
     <button v-on:click="negativeTweets" class="pure-button">Negative</button>
     <button v-on:click="positiveTweets" class="pure-button">Positive</button>
