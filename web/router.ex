@@ -20,9 +20,13 @@ defmodule Etlicus.Router do
   end
 
   scope "/api", Etlicus do
-     pipe_through :api
+    pipe_through :api
+
     get "/afinn", AfinnController, :index
     get "/afinn/:word", AfinnController, :show
+
+    get "/twitter", TwitterController, :index
+    get "/twitter/:url", TwitterController, :show
   end
 
   # Other scopes may use custom stacks.

@@ -24,11 +24,12 @@ import 'purecss'
 import Vue from 'vue';
 import api from './api';
 
-window.app = new Vue({
+const app = new Vue({
   el: '#app',
   data: {
     message: '',
     score: '',
+    search: '',
     comparative: '',
     showScore: false
   },
@@ -40,7 +41,16 @@ window.app = new Vue({
         this.comparative = comparative;
         this.showScore = true;
       });
+    },
+    searchTwits: function() {
+      if (event) event.preventDefault()
+      api.searchTwits(this.search).then((tweets) => {
+        tweets.forEach(tweet => {
+          api.getTweetHtml(tweet.url).then((data) => {
+            console.log(data)
+          });
+        })
+      });
     }
   }
 });
-
