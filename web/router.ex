@@ -17,6 +17,7 @@ defmodule Etlicus.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
+    get "/tweets", PageController, :tweets
   end
 
   scope "/api", Etlicus do

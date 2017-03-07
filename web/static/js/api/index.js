@@ -1,4 +1,5 @@
 import request from 'superagent';
+import axios from 'axios';
 
 export default {
   getScore(text) {
@@ -14,30 +15,36 @@ export default {
         });
     });
   },
-  searchTwits(search) {
-    return new Promise((resolve, reject) => {
-      request
-        .get('/api/twitter')
-        .query({search: search})
-        .set('Accept', 'application/json')
-        .end((err, {body}) => {
-          const tweets = body.map((tweet) => (
-            Object.assign(tweet, {url: `https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`})
-          ));
-          resolve(tweets);
-        });
+  getScoreAsync: async function(text) {
+    const requestScore = await axios.get('/api/afinn', {
+      params: {
+        text: sluglify(text)
+      }
     });
+    const {data} = await Promise.resolve(requestScore);
+    return data
   },
-  getTweetHtml(url) {
-    return new Promise((resolve, reject) => {
-      request
-        .get('api/twitter/' + encodeURIComponent(url))
-        .end((err, {body}) => {
-          console.log(body);
-          resolve(body);
-        });
+  searchTwits: async function(search) {
+    const requestTweets = await axios.get('/api/twitter', {
+      params: {
+        search: search
+      }
     });
+    const {data} = await Promise.resolve(requestTweets);
+    const tweets = data.map((tweet) => (
+      Object.assign(tweet, {url: `https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`})
+    ));
+    return tweets;
+  },
+  getTweetHtml: async function(url) {
+    const requestTweet = await axios.get('/api/twitter/' + encodeURIComponent(url));
+    const {data} = await Promise.resolve(requestTweet);
+    const response = JSON.parse(data.body);
+    const index = response.html.indexOf('<script');
+    const html = response.html.slice(0, index);
+    return html;
   }
 };
 
-const sluglify = text => text.replace(/ /g, '-');
+const sluglify = text => text.replace(/ /g, '-').replace(/[^\w\s!?-]/g,'');
+

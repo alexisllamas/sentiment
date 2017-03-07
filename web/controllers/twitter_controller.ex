@@ -5,16 +5,13 @@ defmodule Etlicus.TwitterController do
 
   def index(conn, _params) do
     search =  Map.get _params, "search"
-    tweets = ExTwitter.search(search, [count: 3])
+    tweets = ExTwitter.search(search, [count: 50])
     json conn, tweets
   end
 
-  def show(conn, %{"url" => search}) do
-    json conn, []
-  end
-
-  def sendTwitts(twits) do
-    render([], "index.json", twitter: twits)
+  def show(conn, %{"url" => url}) do
+    response = HTTPotion.get("https://publish.twitter.com/oembed", query: %{url: url})
+    json conn, response
   end
 
 end

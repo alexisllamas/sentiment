@@ -1,7 +1,10 @@
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var CopyWebpackPlugin = require("copy-webpack-plugin");
+
+require("babel-core/register");
+require('babel-polyfill');
 module.exports = {
-  entry: ["./web/static/css/app.scss", "./web/static/js/app.js"],
+  entry: ["babel-polyfill", "./web/static/css/app.scss", "./web/static/js/app.js"],
   output: {
     path: "./priv/static",
     filename: "js/app.js"
@@ -20,7 +23,8 @@ module.exports = {
       loader: "babel-loader",
       include: __dirname,
       query: {
-        presets: ["es2015"]
+        presets: ["es2015", "stage-0"],
+        plugins: ["transform-async-to-generator"]
       }
     }, {
       test: /\.vue$/,

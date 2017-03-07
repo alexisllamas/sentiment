@@ -6,19 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-
-    <title>Hello Etlicus!</title>
+    <script src="https://use.fontawesome.com/157aafddf6.js"></script>
+    <title>Etlicus</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
   </head>
 
   <body>
+    <div class="pure-menu pure-menu-horizontal">
+      <a href="/" class="pure-menu-heading pure-menu-link">Etlicus</a>
+      <ul class="pure-menu-list">
+        <li class="pure-menu-item"><a href="/" class="pure-menu-link">Text</a></li>
+        <li class="pure-menu-item"><a href="/tweets" class="pure-menu-link">Tweets</a></li>
+      </ul>
+    </div>
     <div class="container">
-      
       <main role="main">
         <%= render @view_module, @view_template, assigns %>
       </main>
 
     </div> <!-- /container -->
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+    <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
   </body>
 </html>

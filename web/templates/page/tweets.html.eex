@@ -1,0 +1,20 @@
+<div id="app">
+  <form class="pure-form pure-g">
+    <div class="pure-u-3-4">
+      <input v-model="search" class="pure-input-1" type="text" placeholder="Search in Twitter">
+    </div>
+    <button class="pure-button pure-button-primary" v-on:click="searchTwits">Search twits</button>
+  </form>
+  <div v-if="showStats">
+    <div>Positive tweets: {{ positiveTweets }}</div>
+    <div>Negative tweets: {{ negativeTweets }}</div>
+    <div>Total score: {{ totalScore }}</div>
+    <div>Average score: {{ average }}</div>
+  </div>
+  <div class="pure-button-group" role="group">
+    <button v-on:click="allTweets" class="pure-button">All</button>
+    <button v-on:click="negativeTweets" class="pure-button">Negative</button>
+    <button v-on:click="positiveTweets" class="pure-button">Positive</button>
+  </div>
+  <div v-html="html"></div>
+<div>

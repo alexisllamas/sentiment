@@ -31,10 +31,18 @@ const app = new Vue({
     score: '',
     search: '',
     comparative: '',
-    showScore: false
+    showScore: false,
+    html: '',
+    scoreTweets: [],
+    showStats: false,
+    positiveTweets: 0,
+    negativeTweets: 0,
+    totalScore: 0,
+    average: 0,
+    tweets: []
   },
   methods: {
-    getScore: function () {
+    getScore: function (event) {
       if (event) event.preventDefault()
       api.getScore(this.message).then(({score, comparative}) => {
         this.score = score;
@@ -42,15 +50,57 @@ const app = new Vue({
         this.showScore = true;
       });
     },
-    searchTwits: function() {
+    allTweets: function() {
       if (event) event.preventDefault()
-      api.searchTwits(this.search).then((tweets) => {
-        tweets.forEach(tweet => {
-          api.getTweetHtml(tweet.url).then((data) => {
-            console.log(data)
-          });
+      console.log('hola');
+      this.html = this.tweets.map(tweet => tweet.html).join('');
+    },
+    negativeTweets: function() {
+      console.log('hola');
+      this.html = this.tweets.filter(tweet => tweet.score < 0).map(tweet => tweet.html).join('');
+    },
+    positiveTweets: function() {
+      console.log('hola');
+      this.html = this.tweets.filter(tweet => tweet.score > 0).map(tweet => tweet.html).join('');
+    },
+    searchTwits: async function() {
+      const {twttr} = window;
+      this.html = '';
+      this.showStats = false;
+      this.tweets = [];
+      if (event) event.preventDefault();
+      const tweets = await api.searchTwits(this.search);
+      let scoreTweets = [];
+      let tweetsArray = [];
+      const self = this;
+      const getCal = (score) => score > 0 ? 'positive <i class="fa fa-thumbs-up" aria-hidden="true"></i>' : (score < 0 ? 'negative <i class="fa fa-thumbs-down" aria-hidden="true"></i>' : 'neutro');
+      const promises = tweets.map((tweet) => (
+        new Promise(async function(resolve, reject) {
+          const tweetResponse = await api.getTweetHtml(tweet.url);
+          const {score} = await api.getScoreAsync(tweet.text);
+          scoreTweets = [...scoreTweets, score];
+          const html = `<div class="pure-g">
+            <div class="pure-u-2-3">${tweetResponse}</div>
+            <div class="pure-u-1-3">
+              <p>Score: ${score}</p>
+              <p>${getCal(score)}</p>
+            </div>
+          </div>`;
+          tweetsArray = [...tweetsArray, {
+            tweetHtml: html,
+            score: score
+          }];
+          self.html = self.html + html;
+          resolve();
         })
-      });
+      ));
+      const responses = await Promise.all(promises);
+      this.positiveTweets = scoreTweets.filter(score => score > 0).length;
+      this.negativeTweets = scoreTweets.filter(score => score < 0).length;
+      this.totalScore = scoreTweets.reduce((prev, next) => prev + next, 0);
+      this.average = this.totalScore / scoreTweets.length;
+      this.showStats = true;
+      twttr.widgets.load();
     }
   }
 });
